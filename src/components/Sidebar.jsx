@@ -20,9 +20,10 @@ import {
   Assignment,
   ShoppingCart,
   BarChart as BarChartIcon,
-  AccessTime,
   ChevronLeft,
-  PointOfSale
+  PointOfSale,
+  Receipt,
+  LocalAtm,
 } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 
@@ -30,30 +31,30 @@ const drawerWidth = 260;
 
 export default function Sidebar({ open, onClose, selectedSection, onSectionChange }) {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminRoute  = location.pathname.startsWith("/admin");
   const isKioscoRoute = location.pathname.startsWith("/kiosco");
 
-  // Definir todas las opciones del menú
   const allMenuItems = [
-    { text: "Dashboard", icon: <Dashboard />, key: "dashboard" },
-    { text: "Empleados", icon: <People />, key: "empleados" },
-    { text: "Productos", icon: <Inventory />, key: "productos" },
-    { text: "Kioscos", icon: <Store />, key: "kioscos" },
-    { text: "Stock", icon: <BarChartIcon />, key: "stock" },
-    { text: "Pedidos", icon: <ShoppingCart />, key: "pedidos" },
-    { text: "Usuarios Sistema", icon: <Assignment />, key: "usuarios" },
-    { text: "Ventas", icon: <PointOfSale />, key: "ventas" }
+    { text: "Dashboard",      icon: <Dashboard />,      key: "dashboard"    },
+    { text: "Empleados",      icon: <People />,          key: "empleados"    },
+    { text: "Productos",      icon: <Inventory />,       key: "productos"    },
+    { text: "Kioscos",        icon: <Store />,           key: "kioscos"      },
+    { text: "Stock",          icon: <BarChartIcon />,    key: "stock"        },
+    { text: "Pedidos",        icon: <ShoppingCart />,    key: "pedidos"      },
+    { text: "Usuarios Sistema", icon: <Assignment />,    key: "usuarios"     },
+    { text: "Ventas",         icon: <PointOfSale />,     key: "ventas"       },
+    { text: "Historial Ventas", icon: <Receipt />,       key: "ventas_admin" },
+    { text: "Cajas",          icon: <LocalAtm />,        key: "cajas"        },
   ];
 
-  // Filtrar menuItems según la ruta
   const getFilteredMenuItems = () => {
     if (isAdminRoute) {
+      // En admin: todo menos "ventas" (el del kiosco), sí incluye ventas_admin y cajas
       return allMenuItems.filter(item => item.key !== "ventas");
     } else if (isKioscoRoute) {
-      return allMenuItems.filter(item => 
-        item.key !== "empleados" && 
-        item.key !== "usuarios" && 
-        item.key !== "kioscos"
+      // En kiosco: solo las secciones del kiosco, sin ventas_admin ni cajas
+      return allMenuItems.filter(item =>
+        !["empleados", "usuarios", "kioscos", "ventas_admin", "cajas"].includes(item.key)
       );
     }
     return [];
@@ -61,34 +62,17 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
 
   const menuItems = getFilteredMenuItems();
 
-  // Obtener el email y rol según la ruta
   const getUserInfo = () => {
-    if (isAdminRoute) {
-      return {
-        email: "admin@zoima.com",
-        role: "Administrador"
-      };
-    } else if (isKioscoRoute) {
-      return {
-        email: "kiosco@zoima.com",
-        role: "Kiosco"
-      };
-    }
-    return {
-      email: "usuario@zoima.com",
-      role: "Usuario"
-    };
+    if (isAdminRoute)  return { email: "admin@zoima.com",  role: "Administrador" };
+    if (isKioscoRoute) return { email: "kiosco@zoima.com", role: "Kiosco" };
+    return { email: "usuario@zoima.com", role: "Usuario" };
   };
 
   const userInfo = getUserInfo();
 
-  // Determinar el gradiente del header según la ruta
   const getHeaderGradient = () => {
-    if (isAdminRoute) {
-      return "linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.8) 100%)";
-    } else if (isKioscoRoute) {
-      return "linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.8) 100%)";
-    }
+    if (isAdminRoute)  return "linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.8) 100%)";
+    if (isKioscoRoute) return "linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.8) 100%)";
     return "var(--header-gradient, linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.8) 100%))";
   };
 
@@ -97,9 +81,7 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
       variant="temporary"
       open={open}
       onClose={onClose}
-      ModalProps={{
-        keepMounted: true,
-      }}
+      ModalProps={{ keepMounted: true }}
       sx={{
         width: drawerWidth,
         flexShrink: 0,
@@ -112,12 +94,8 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
           borderBottom: "none",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
           height: "100vh",
-          "&::-webkit-scrollbar": {
-            width: "4px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "rgba(255, 255, 255, 0.05)",
-          },
+          "&::-webkit-scrollbar": { width: "4px" },
+          "&::-webkit-scrollbar-track": { background: "rgba(255, 255, 255, 0.05)" },
           "&::-webkit-scrollbar-thumb": {
             background: "var(--scrollbar-thumb, rgba(102, 126, 234, 0.5))",
             borderRadius: "2px",
@@ -125,9 +103,9 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
         },
       }}
     >
-      {/* Header de la sidebar */}
-      <Box sx={{ 
-        p: 3, 
+      {/* Header */}
+      <Box sx={{
+        p: 3,
         borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
         background: getHeaderGradient(),
       }}>
@@ -137,12 +115,10 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
           </Typography>
           <IconButton
             onClick={onClose}
-            sx={{ 
+            sx={{
               color: "white",
               background: "rgba(255, 255, 255, 0.1)",
-              "&:hover": {
-                background: "rgba(255, 255, 255, 0.2)",
-              }
+              "&:hover": { background: "rgba(255, 255, 255, 0.2)" },
             }}
           >
             <ChevronLeft />
@@ -157,12 +133,7 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
       </Box>
 
       {/* Menu items */}
-      <Box sx={{ 
-        overflow: "auto", 
-        mt: 2, 
-        pb: 2,
-        height: "calc(100vh - 140px)",
-      }}>
+      <Box sx={{ overflow: "auto", mt: 2, pb: 2, height: "calc(100vh - 140px)" }}>
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.key} disablePadding sx={{ mb: 0.5, px: 1 }}>
@@ -187,20 +158,18 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
                   },
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    color: selectedSection === item.key ? "white" : "rgba(255, 255, 255, 0.85)",
-                    minWidth: 40,
-                  }}
-                >
+                <ListItemIcon sx={{
+                  color: selectedSection === item.key ? "white" : "rgba(255, 255, 255, 0.85)",
+                  minWidth: 40,
+                }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
                   primary={item.text}
-                  primaryTypographyProps={{ 
-                    fontSize: "0.95rem", 
+                  primaryTypographyProps={{
+                    fontSize: "0.95rem",
                     fontWeight: 500,
-                    color: selectedSection === item.key ? "white" : "rgba(255, 255, 255, 0.9)"
+                    color: selectedSection === item.key ? "white" : "rgba(255, 255, 255, 0.9)",
                   }}
                 />
               </ListItemButton>
@@ -209,16 +178,8 @@ export default function Sidebar({ open, onClose, selectedSection, onSectionChang
         </List>
 
         {/* Footer */}
-        <Box sx={{ 
-          mt: 3, 
-          px: 3, 
-          pt: 2,
-          borderTop: "1px solid rgba(255, 255, 255, 0.1)"
-        }}>
-          <Typography variant="caption" sx={{ 
-            color: "rgba(255, 255, 255, 0.5)", 
-            fontSize: "0.75rem"
-          }}>
+        <Box sx={{ mt: 3, px: 3, pt: 2, borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}>
+          <Typography variant="caption" sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: "0.75rem" }}>
             Zoima v2.0 {isKioscoRoute ? "- Módulo Kiosco" : ""}
           </Typography>
         </Box>

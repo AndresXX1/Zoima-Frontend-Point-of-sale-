@@ -1,0 +1,47 @@
+CONEXION DE POSNET
+1. Conectar el dispositivo
+Enchufalo y conectalo al wifi. En el panel de MP va a aparecer en:
+https://www.mercadopago.com.ar/developers/panel → tu app → dispositivos
+2. Obtener el device_id real
+GET /api/mp/dispositivos
+Eso te devuelve el ID real del posnet, algo como PAX_A910__SMARTPOS123456.
+3. Actualizar la DB
+sqlUPDATE kioscos 
+SET mp_device_id = 'EL_ID_REAL_QUE_TE_DEVOLVIO'
+WHERE id = 5;
+```
+
+**4. Activar modo integrado (una sola vez)**
+```
+POST /api/mp/activar-pdv
+5. Cambiar una línea en TabNuevaVenta.jsx
+js// DE esto (simulación):
+fetch(`${API}/mp/simular-pago`, ...)
+
+// A esto (real):
+fetch(`${API}/mp/payment-intent`, ...)
+```
+
+**6. Configurar el webhook en el panel de MP**
+
+En tu app de MP → Webhooks → agregar:
+```
+https://tudominio.com/api/mp/webhook
+
+Eso es todo. Son 15 minutos de trabajo cuando llegue el hardware. Todo lo demás ya está construido. 🎯no entiendo esa parte...Cuando llegue el posnet
+1. Conectar el dispositivo
+Enchufalo y conectalo al wifi. En el panel de MP va a aparecer en: https://www.mercadopago.com.ar/developers/panel → tu app → dispositivos
+2. Obtener el device_id realGET /api/mp/dispositivosademas el posnet pide tener una cuenta vinculada no? y ese get lo hago en el posnet?7:15 p. m.Buena pregunta, te lo explico más claro:
+Sí, el posnet necesita estar vinculado a una cuenta de MP. Cuando comprás el dispositivo físico, MP te pide que lo actives desde la app de MP en el celular — básicamente escaneás un QR que viene en la caja y lo asociás a tu cuenta. Ese proceso lo hace el dueño del negocio con su cuenta de MP real (no la de prueba).
+Una vez vinculado, el posnet aparece automáticamente en el panel de desarrolladores de esa cuenta. Ahí es donde vas a ver el device_id.
+
+El GET /api/mp/dispositivos no lo hacés desde el posnet — lo hacés vos desde Postman, Thunder Client, o el navegador logueado. Es una llamada a tu propio backend que internamente le pregunta a MP "che, qué dispositivos tiene esta cuenta?". MP te responde con la lista y ahí ves el ID.
+
+El flujo completo en la práctica es:
+1. Comprás el posnet físico
+2. Lo activás con la app de MP en tu celular 
+   → queda vinculado a tu cuenta
+3. Entrás a tu sistema y llamás GET /api/mp/dispositivos
+   → te devuelve el device_id del posnet
+4. Actualizás la DB con ese device_id
+5. Listo, ya recibe órdenes de tu app

@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [selectedSection, setSelectedSection] = useState("dashboard"); // ← NUEVO
   const location = useLocation();
 
   useEffect(() => {
@@ -80,7 +81,10 @@ function AppContent() {
   return (
     <AnimatedBackground>
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <Navbar 
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} 
+          onSectionChange={setSelectedSection} // ← NUEVO
+        />
         <Box sx={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<Fichar />} />
@@ -89,7 +93,12 @@ function AppContent() {
               path="/admin"
               element={
                 <ProtectedRoute allowedRoles={["ADMIN"]}>
-                  <Admin sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+                  <Admin 
+                    sidebarOpen={sidebarOpen} 
+                    onSidebarToggle={setSidebarOpen}
+                    selectedSection={selectedSection}       
+                    onSectionChange={setSelectedSection}     
+                  />
                 </ProtectedRoute>
               }
             />
@@ -97,7 +106,12 @@ function AppContent() {
               path="/kiosco"
               element={
                 <ProtectedRoute allowedRoles={["KIOSCO"]}>
-                  <Kiosco sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+                  <Kiosco 
+                    sidebarOpen={sidebarOpen} 
+                    onSidebarToggle={setSidebarOpen}
+                    selectedSection={selectedSection}       
+                    onSectionChange={setSelectedSection}    
+                  />
                 </ProtectedRoute>
               }
             />

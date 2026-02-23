@@ -10,7 +10,8 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: "0.0.0.0",
-    port: 5173,
-  },
+    host: '0.0.0.0', // permite acceso desde fuera
+    port: 5173,      // puerto de Vite
+    strictPort: true // no cambia el puerto si está ocupado
+  }
 })

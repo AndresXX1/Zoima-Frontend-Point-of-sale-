@@ -221,4 +221,3 @@ export const StockCategoriasChart = ({ data: externalData, loading: externalLoad
     </ChartPanel>
   );
 };
-

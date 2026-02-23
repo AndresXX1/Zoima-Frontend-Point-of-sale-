@@ -10,7 +10,7 @@ const API = "http://localhost:3000/api";
 // ─── Animaciones ──────────────────────────────────────────────
 const containerAnimation = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 
 const itemAnimation = {
@@ -60,7 +60,7 @@ function useFetch(url) {
   return { data, error, loading };
 }
 
-// ─── Componente: Número grande animado ────────────────────────
+// ─── Número grande animado ────────────────────────────────────
 function StatNumber({ value, size = "3.8rem" }) {
   return (
     <motion.div
@@ -68,22 +68,17 @@ function StatNumber({ value, size = "3.8rem" }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Typography
-        sx={{
-          fontSize: size,
-          fontWeight: 900,
-          lineHeight: 1,
-          fontVariantNumeric: "tabular-nums",
-          letterSpacing: "-0.03em",
-        }}
-      >
+      <Typography sx={{
+        fontSize: size, fontWeight: 900, lineHeight: 1,
+        fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em",
+      }}>
         {value}
       </Typography>
     </motion.div>
   );
 }
 
-// ─── Componente: Pill de estado ────────────────────────────────
+// ─── Pill de estado ────────────────────────────────────────────
 function StatusPill({ ok, okLabel = "OK", errLabel = "Sin datos" }) {
   return (
     <Chip
@@ -93,33 +88,23 @@ function StatusPill({ ok, okLabel = "OK", errLabel = "Sin datos" }) {
         background: ok ? "rgba(52,211,153,0.18)" : "rgba(248,113,113,0.18)",
         color: ok ? "#34d399" : "#f87171",
         border: `1px solid ${ok ? "rgba(52,211,153,0.35)" : "rgba(248,113,113,0.35)"}`,
-        fontWeight: 700,
-        fontSize: "0.68rem",
-        height: 22,
+        fontWeight: 700, fontSize: "0.68rem", height: 22,
       }}
     />
   );
 }
 
-// ─── Componente: Skeleton loader ───────────────────────────────
+// ─── Skeleton loader ───────────────────────────────────────────
 function CardSkeleton() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
       {[80, 40, 60].map((w, i) => (
-        <Box
-          key={i}
-          sx={{
-            height: i === 0 ? 44 : 16,
-            width: `${w}%`,
-            borderRadius: 1,
-            background: "rgba(255,255,255,0.07)",
-            animation: "pulse 1.6s ease-in-out infinite",
-            "@keyframes pulse": {
-              "0%,100%": { opacity: 0.5 },
-              "50%":      { opacity: 1 },
-            },
-          }}
-        />
+        <Box key={i} sx={{
+          height: i === 0 ? 44 : 16, width: `${w}%`, borderRadius: 1,
+          background: "rgba(255,255,255,0.07)",
+          animation: "pulse 1.6s ease-in-out infinite",
+          "@keyframes pulse": { "0%,100%": { opacity: 0.5 }, "50%": { opacity: 1 } },
+        }} />
       ))}
     </Box>
   );
@@ -132,23 +117,20 @@ function CajaCard({ onClick }) {
   const abierta = data?.estado === "ABIERTA";
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: { xs: 200, sm: 240 },
-        background: abierta
-          ? "linear-gradient(135deg, rgba(52,211,153,0.18) 0%, rgba(16,185,129,0.06) 100%)"
-          : "rgba(255,255,255,0.04)",
-        border: abierta ? "1px solid rgba(52,211,153,0.3)" : "1px solid rgba(255,255,255,0.08)",
-        "&:hover": { 
-          transform: "translateY(-6px)", 
-          boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
-          border: abierta ? "1px solid rgba(52,211,153,0.5)" : "1px solid rgba(255,255,255,0.15)",
-        },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: { xs: 200, sm: 240 },
+      background: abierta
+        ? "linear-gradient(135deg, rgba(52,211,153,0.18) 0%, rgba(16,185,129,0.06) 100%)"
+        : "rgba(255,255,255,0.04)",
+      border: abierta ? "1px solid rgba(52,211,153,0.3)" : "1px solid rgba(255,255,255,0.08)",
+      "&:hover": {
+        transform: "translateY(-6px)",
+        boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
+        border: abierta ? "1px solid rgba(52,211,153,0.5)" : "1px solid rgba(255,255,255,0.15)",
+      },
+    }}>
       <Box sx={{ p: { xs: 3, sm: 4 }, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: { xs: 2, sm: 3 } }}>
           <Typography sx={{ fontSize: { xs: "2rem", sm: "2.4rem" }, lineHeight: 1 }}>🏦</Typography>
@@ -202,27 +184,29 @@ function VentasCard({ onClick }) {
   const variacionPositiva = d.variacion_valor > 0;
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: { xs: 200, sm: 240 },
-        "&:hover": { 
-          transform: "translateY(-6px)", 
-          boxShadow: "0 24px 48px rgba(0,0,0,0.5)", 
-          background: "rgba(255,255,255,0.07)",
-          border: "1px solid rgba(255,255,255,0.15)",
-        },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: { xs: 200, sm: 240 },
+      "&:hover": {
+        transform: "translateY(-6px)",
+        boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
+        background: "rgba(255,255,255,0.07)",
+        border: "1px solid rgba(255,255,255,0.15)",
+      },
+    }}>
       <Box sx={{ height: 4, background: `linear-gradient(90deg, ${color.main}, transparent)` }} />
       <Box sx={{ p: { xs: 3, sm: 4 }, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: { xs: 2, sm: 3 } }}>
           <Typography sx={{ fontSize: { xs: "2rem", sm: "2.4rem" }, lineHeight: 1 }}>{color.icon}</Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             {variacion && (
-              <Chip label={variacion} size="small" sx={{ background: variacionPositiva ? "rgba(52,211,153,0.18)" : "rgba(248,113,113,0.18)", color: variacionPositiva ? "#34d399" : "#f87171", border: `1px solid ${variacionPositiva ? "rgba(52,211,153,0.35)" : "rgba(248,113,113,0.35)"}`, fontWeight: 700, fontSize: "0.68rem", height: 22 }} />
+              <Chip label={variacion} size="small" sx={{
+                background: variacionPositiva ? "rgba(52,211,153,0.18)" : "rgba(248,113,113,0.18)",
+                color: variacionPositiva ? "#34d399" : "#f87171",
+                border: `1px solid ${variacionPositiva ? "rgba(52,211,153,0.35)" : "rgba(248,113,113,0.35)"}`,
+                fontWeight: 700, fontSize: "0.68rem", height: 22,
+              }} />
             )}
             <StatusPill ok={!error && !loading} okLabel="Hoy" />
           </Box>
@@ -269,20 +253,17 @@ function ProductosCard({ onClick }) {
   const nuevos   = d.nuevos_mes ?? 0;
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: { xs: 200, sm: 240 },
-        "&:hover": { 
-          transform: "translateY(-6px)", 
-          boxShadow: "0 24px 48px rgba(0,0,0,0.5)", 
-          background: "rgba(255,255,255,0.07)",
-          border: "1px solid rgba(255,255,255,0.15)",
-        },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: { xs: 200, sm: 240 },
+      "&:hover": {
+        transform: "translateY(-6px)",
+        boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
+        background: "rgba(255,255,255,0.07)",
+        border: "1px solid rgba(255,255,255,0.15)",
+      },
+    }}>
       <Box sx={{ height: 4, background: `linear-gradient(90deg, ${color.main}, transparent)` }} />
       <Box sx={{ p: { xs: 3, sm: 4 }, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: { xs: 2, sm: 3 } }}>
@@ -325,26 +306,23 @@ function StockCard({ onClick }) {
   const color = accentColors.stock;
 
   const d = data?.data ?? data ?? {};
-  const unidades  = d.total_unidades ?? 0;
+  const unidades   = d.total_unidades ?? 0;
   const valorizado = d.stock_valorizado ?? 0;
-  const bajoStock = d.productos_bajo_stock ?? 0;
-  const sinStock  = d.productos_sin_stock ?? 0;
+  const bajoStock  = d.productos_bajo_stock ?? 0;
+  const sinStock   = d.productos_sin_stock ?? 0;
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: { xs: 200, sm: 240 },
-        "&:hover": { 
-          transform: "translateY(-6px)", 
-          boxShadow: "0 24px 48px rgba(0,0,0,0.5)", 
-          background: "rgba(255,255,255,0.07)",
-          border: "1px solid rgba(255,255,255,0.15)",
-        },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: { xs: 200, sm: 240 },
+      "&:hover": {
+        transform: "translateY(-6px)",
+        boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
+        background: "rgba(255,255,255,0.07)",
+        border: "1px solid rgba(255,255,255,0.15)",
+      },
+    }}>
       <Box sx={{ height: 4, background: `linear-gradient(90deg, ${color.main}, transparent)` }} />
       <Box sx={{ p: { xs: 3, sm: 4 }, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: { xs: 2, sm: 3 } }}>
@@ -393,17 +371,14 @@ function AlertasCard({ onClick }) {
   const bajoMin  = alertas.filter((a) => a.estado_alerta === "bajo_minimo").length;
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: 220,
-        background: count > 0 ? "rgba(249,115,22,0.07)" : "rgba(255,255,255,0.04)",
-        border: count > 0 ? "1px solid rgba(249,115,22,0.25)" : "1px solid rgba(255,255,255,0.08)",
-        "&:hover": { transform: "translateY(-5px)", boxShadow: "0 24px 48px rgba(0,0,0,0.5)" },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: 220,
+      background: count > 0 ? "rgba(249,115,22,0.07)" : "rgba(255,255,255,0.04)",
+      border: count > 0 ? "1px solid rgba(249,115,22,0.25)" : "1px solid rgba(255,255,255,0.08)",
+      "&:hover": { transform: "translateY(-5px)", boxShadow: "0 24px 48px rgba(0,0,0,0.5)" },
+    }}>
       <Box sx={{ height: 3, background: `linear-gradient(90deg, ${color.main}, transparent)` }} />
       <Box sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 3 }}>
@@ -458,20 +433,17 @@ function PedidosCard({ onClick }) {
   const progreso    = d.progreso ?? 0;
 
   return (
-    <Paper
-      onClick={onClick}
-      sx={{
-        ...cardBase,
-        cursor: "pointer",
-        minHeight: { xs: 200, sm: 240 },
-        "&:hover": { 
-          transform: "translateY(-6px)", 
-          boxShadow: "0 24px 48px rgba(0,0,0,0.5)", 
-          background: "rgba(255,255,255,0.07)",
-          border: "1px solid rgba(255,255,255,0.15)",
-        },
-      }}
-    >
+    <Paper onClick={onClick} sx={{
+      ...cardBase,
+      cursor: "pointer",
+      minHeight: { xs: 200, sm: 240 },
+      "&:hover": {
+        transform: "translateY(-6px)",
+        boxShadow: "0 24px 48px rgba(0,0,0,0.5)",
+        background: "rgba(255,255,255,0.07)",
+        border: "1px solid rgba(255,255,255,0.15)",
+      },
+    }}>
       <Box sx={{ height: 4, background: `linear-gradient(90deg, ${color.main}, transparent)` }} />
       <Box sx={{ p: { xs: 3, sm: 4 }, display: "flex", flexDirection: "column", height: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: { xs: 2, sm: 3 } }}>
@@ -524,12 +496,104 @@ function PedidosCard({ onClick }) {
   );
 }
 
+// ─── Mini documentación ────────────────────────────────────────
+const docItems = [
+  {
+    icon: "🧾",
+    section: "ventas",
+    title: "Nueva venta",
+    desc: "Registrá ventas en tiempo real, seleccioná productos, método de pago y emití el ticket. Desde aquí también podés consultar el historial de ventas del día.",
+    tips: ["Usá el buscador para encontrar productos rápido", "Podés cobrar con efectivo, tarjeta o mixto"],
+  },
+  {
+    icon: "🗃️",
+    section: "stock",
+    title: "Ver stock",
+    desc: "Consultá las existencias actuales del kiosco. Filtrá por producto o categoría y detectá rápidamente los artículos con stock bajo o agotado.",
+    tips: ["Los ítems en rojo están agotados", "Los amarillos están por debajo del mínimo configurado"],
+  },
+  {
+    icon: "📦",
+    section: "productos",
+    title: "Productos",
+    desc: "Accedé al catálogo completo de productos habilitados para este kiosco. Podés ver precios, descripciones y el estado de cada ítem.",
+    tips: ["Los productos inactivos no aparecen en la pantalla de venta"],
+  },
+  {
+    icon: "🚚",
+    section: "pedidos",
+    title: "Pedidos",
+    desc: "Gestioná los pedidos de reposición del kiosco. Revisá el estado de cada pedido, desde pendiente hasta completado.",
+    tips: ["Hacé un pedido cuando el stock baje del mínimo", "Los pedidos completados actualizan el stock automáticamente"],
+  },
+];
+
+function MiniDocs({ onNavigate }) {
+  return (
+    <Box sx={{ mt: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2.5 }}>
+        <Divider sx={{ flex: 1, borderColor: "rgba(255,255,255,0.07)" }} />
+        <Typography variant="overline" sx={{ opacity: 0.3, letterSpacing: "0.18em", fontSize: "0.68rem", fontWeight: 700, color: "#fff", whiteSpace: "nowrap" }}>
+          📖 GUÍA DE SECCIONES
+        </Typography>
+        <Divider sx={{ flex: 1, borderColor: "rgba(255,255,255,0.07)" }} />
+      </Box>
+
+      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+        {docItems.map((item) => (
+          <Paper
+            key={item.section}
+            onClick={() => onNavigate(item.section)}
+            sx={{
+              ...cardBase,
+              cursor: "pointer",
+              p: { xs: 2.5, sm: 3 },
+              display: "flex",
+              flexDirection: "column",
+              gap: 1.5,
+              minHeight: 200,
+              "&:hover": {
+                transform: "translateY(-3px)",
+                background: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.14)",
+                boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+              },
+            }}
+          >
+              {/* Cabecera */}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Typography sx={{ fontSize: "1.6rem", lineHeight: 1 }}>{item.icon}</Typography>
+                <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#fff" }}>{item.title}</Typography>
+              </Box>
+
+              {/* Descripción */}
+              <Typography variant="body2" sx={{ opacity: 0.55, lineHeight: 1.6, fontSize: "0.8rem" }}>
+                {item.desc}
+              </Typography>
+
+              {/* Tips */}
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.6, mt: "auto" }}>
+                {item.tips.map((tip, i) => (
+                  <Box key={i} sx={{ display: "flex", alignItems: "flex-start", gap: 0.8 }}>
+                    <Typography sx={{ color: "rgba(52,211,153,0.8)", fontSize: "0.65rem", mt: "2px", flexShrink: 0 }}>✦</Typography>
+                    <Typography variant="caption" sx={{ opacity: 0.45, fontSize: "0.72rem", lineHeight: 1.5 }}>{tip}</Typography>
+                  </Box>
+                ))}
+              </Box>
+
+              <Typography variant="caption" sx={{ opacity: 0.2, mt: 0.5 }}>Click para ir →</Typography>
+          </Paper>
+        ))}
+      </Box>
+    </Box>
+  );
+}
 
 // ─── Secciones disponibles ─────────────────────────────────────
-import StockTable    from "../components/tables/StockTable";
+import StockTable     from "../components/tables/StockTableKiosco/Stocktable";
 import ProductosTable from "../components/tables/ProductosTable";
-import PedidosTable  from "../components/tables/PedidosTable";
-import VentasTable   from "../components/caja/CajaVentas";
+import PedidosTable   from "../components/tables/PedidosTable";
+import VentasTable    from "../components/caja/CajaVentas";
 
 const sectionComponents = {
   stock:     StockTable,
@@ -539,90 +603,50 @@ const sectionComponents = {
 };
 
 // ─── Dashboard principal ───────────────────────────────────────
-export default function Kiosco({ sidebarOpen, onSidebarToggle }) {
-  const [selectedSection, setSelectedSection] = useState("dashboard");
-  const goTo = (s) => setSelectedSection(s);
+// ↓ CAMBIO: recibe selectedSection y onSectionChange como props desde App.jsx
+//   en lugar de manejar el estado localmente
+export default function Kiosco({ sidebarOpen, onSidebarToggle, selectedSection, onSectionChange }) {
+  // ← ELIMINADO: const [selectedSection, setSelectedSection] = useState("dashboard");
+
+  // goTo ahora llama al prop onSectionChange en lugar del setter local
+  const goTo = (s) => onSectionChange(s);
 
   const renderDashboard = () => (
     <motion.div variants={containerAnimation} initial="hidden" animate="show">
 
-      {/* Header */}
+      {/* ── Header ── */}
       <motion.div variants={itemAnimation}>
-        <Box sx={{ mb: { xs: 4, md: 6 } }}>
-          <Typography
-            variant="h1"
-            fontWeight={900}
-            sx={{ 
-              color: "#fff", 
-              letterSpacing: "-0.04em", 
-              lineHeight: 1, 
-              fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem" }, 
-              mb: 1 
-            }}
-          >
+        <Box sx={{ mb: { xs: 4, md: 5 }, textAlign: "center" }}>
+          <Typography variant="h1" fontWeight={900} sx={{
+            color: "#fff", letterSpacing: "-0.04em", lineHeight: 1,
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem" }, mb: 1,
+          }}>
             Panel operativo
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.4, fontWeight: 400, fontSize: { xs: "0.875rem", md: "1rem" } }}>
+          <Typography variant="body1" sx={{ opacity: 0.4, color: "white", fontWeight: 400, fontSize: { xs: "0.875rem", md: "1rem" } }}>
             {new Date().toLocaleDateString("es-AR", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </Typography>
         </Box>
       </motion.div>
 
-      {/* Sección Principal: Caja destacada */}
+      {/* ── ACCESO RÁPIDO ── */}
       <motion.div variants={itemAnimation}>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} sx={{ mb: { xs: 3, md: 4 } }}>
-          <Grid item xs={12} lg={6}>
-            <CajaCard onClick={() => goTo("ventas")} />
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            <VentasCard onClick={() => goTo("ventas")} />
-          </Grid>
-        </Grid>
-      </motion.div>
-
-      {/* Sección Operativa: Inventario y Pedidos */}
-      <motion.div variants={itemAnimation}>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} sx={{ mb: { xs: 3, md: 4 } }}>
-          <Grid item xs={12} sm={6} lg={3}>
-            <ProductosCard onClick={() => goTo("productos")} />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
-            <StockCard onClick={() => goTo("stock")} />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
-            <PedidosCard onClick={() => goTo("pedidos")} />
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
-            <AlertasCard onClick={() => goTo("stock")} />
-          </Grid>
-        </Grid>
-      </motion.div>
-
-      {/* Acceso rápido */}
-      <motion.div variants={itemAnimation}>
-        <Divider sx={{ mb: { xs: 3, md: 4 }, borderColor: "rgba(255,255,255,0.06)" }} />
-        <Typography 
-          variant="overline" 
-          sx={{ 
-            opacity: 0.35, 
-            letterSpacing: "0.18em", 
-            fontSize: "0.7rem", 
-            fontWeight: 700,
-            display: "block",
-            mb: 2
-          }}
-        >
+        <Typography variant="overline" sx={{
+          opacity: 0.35, letterSpacing: "0.18em", fontSize: "0.7rem", fontWeight: 700,
+          display: "block", mb: 2, color: "#fff", textAlign: "center",
+        }}>
           Acceso rápido
         </Typography>
-        <Grid container spacing={{ xs: 2, sm: 2.5 }}>
-          {[
-            { label: "Nueva venta",  icon: "🧾", section: "ventas",    color: "#34d399" },
-            { label: "Ver stock",    icon: "🗃️",  section: "stock",     color: "#f59e0b" },
-            { label: "Productos",    icon: "📦", section: "productos", color: "#60a5fa" },
-            { label: "Pedidos",      icon: "🚚", section: "pedidos",   color: "#a78bfa" },
-          ].map((item) => (
-            <Grid item xs={6} sm={3} key={item.section}>
+        <Box sx={{ display: "flex", justifyContent: "center", mb: { xs: 4, md: 5 } }}>
+          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 180px)", gap: 2 }}>
+            {[
+              { label: "Nueva venta",  icon: "🧾", section: "ventas",    color: "#34d399" },
+              { label: "Ver stock",    icon: "🗃️",  section: "stock",     color: "#f59e0b" },
+              { label: "Productos",    icon: "📦", section: "productos", color: "#60a5fa" },
+              { label: "Pedidos",      icon: "🚚", section: "pedidos",   color: "#a78bfa" },
+            ].map((item) => (
               <Paper
+                key={item.section}
                 onClick={() => goTo(item.section)}
                 sx={{
                   ...cardBase,
@@ -631,7 +655,7 @@ export default function Kiosco({ sidebarOpen, onSidebarToggle }) {
                   display: "flex",
                   flexDirection: "column",
                   gap: 1,
-                  minHeight: { xs: 100, sm: 120 },
+                  minHeight: 120,
                   justifyContent: "center",
                   alignItems: "center",
                   textAlign: "center",
@@ -642,14 +666,42 @@ export default function Kiosco({ sidebarOpen, onSidebarToggle }) {
                   },
                 }}
               >
-                <Typography sx={{ fontSize: { xs: "1.5rem", sm: "1.8rem" }, lineHeight: 1 }}>{item.icon}</Typography>
-                <Typography fontWeight={700} sx={{ fontSize: { xs: "0.875rem", sm: "1rem" }, color: item.color }}>
+                <Typography sx={{ fontSize: "1.8rem", lineHeight: 1 }}>{item.icon}</Typography>
+                <Typography fontWeight={700} sx={{ fontSize: "0.95rem", color: item.color }}>
                   {item.label}
                 </Typography>
               </Paper>
-            </Grid>
-          ))}
-        </Grid>
+            ))}
+          </Box>
+        </Box>
+      </motion.div>
+
+      {/* ── DIVIDER ── */}
+      <motion.div variants={itemAnimation}>
+        <Divider sx={{ borderColor: "rgba(255,255,255,0.08)", mb: { xs: 4, md: 5 } }} />
+      </motion.div>
+
+      {/* ── PANEL OPERATIVO ── */}
+      <motion.div variants={itemAnimation}>
+        <Typography variant="overline" sx={{
+          opacity: 0.35, letterSpacing: "0.18em", fontSize: "0.7rem", fontWeight: 700,
+          display: "block", mb: 2, color: "#fff", textAlign: "center",
+        }}>
+          Panel operativo
+        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "center", mb: { xs: 4, md: 5 } }}>
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
+            <CajaCard onClick={() => goTo("ventas")} />
+            <VentasCard onClick={() => goTo("ventas")} />
+            <AlertasCard onClick={() => goTo("stock")} />
+            <StockCard onClick={() => goTo("stock")} />
+          </Box>
+        </Box>
+      </motion.div>
+
+      {/* ── MINI DOCUMENTACIÓN — al final ── */}
+      <motion.div variants={itemAnimation}>
+        <MiniDocs onNavigate={goTo} />
       </motion.div>
 
     </motion.div>
@@ -670,7 +722,7 @@ export default function Kiosco({ sidebarOpen, onSidebarToggle }) {
         open={sidebarOpen}
         onClose={() => onSidebarToggle(false)}
         selectedSection={selectedSection}
-        onSectionChange={setSelectedSection}
+        onSectionChange={onSectionChange}  // ← antes era setSelectedSection
       />
       <Box
         component="main"
